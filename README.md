@@ -1,22 +1,29 @@
 # mapforce-runner-azure-function
 
 ## Objective
-To have 1 common azure function that can run dynamically any mapforce jar as follow:
+To have 1 common azure function that can run any mapforce jar as follow:
 ![Objective](images/1-box-diagram.png)
 
-## Sample
+## Use case
 ![Objective](images/2-box-diagram.png)
 
 ## Notes
 This project is :
-- a proof of concept
-- gives an azure function, common function run mapforce jars
-- works for simple mapping where there is  1 input component & 1 output component as follow
+- a proof of concept version
+- gives an azure function, a common function that dynamically load and run mapforce jars
+- works for simple mapping where there are exactly : 1 input component & 1 output component as follow:
+
 
 ![Simple 1 input 1 output mapping](images/0-mapforce-simple-mapping.png)
 
+## Design
 
-# Steps to run
+The following diagram shows high level design of the solution:
+
+![Design](images/3-hld.png)
+
+
+## Steps to run
 
 1. Create Azure required resources: 
    - Resource group
@@ -76,8 +83,8 @@ This project is :
 
         https://{functionAppName}.azurewebsites.net/api/mapforcerunner
 
-> At the end of step 10, the endpoint url will be shown in console. 
-> You can also get the endpoint url from Azure Portal.
+    > At the end of step 10, the endpoint url will be shown in console. 
+    > You can also get the endpoint url from Azure Portal.
 
 
 
