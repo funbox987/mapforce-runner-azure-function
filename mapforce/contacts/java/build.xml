@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<project name="Mapping" default="test" basedir=".">
+	<property name="build.sysclasspath" value="last"/>
+
+	<target name="compile">
+		<javac srcdir="." classpath="." />
+	</target>
+	<target name="test" depends="compile">
+		<java classpath="C:\Users\taufik\source\mapforce-wrapper-azfunction\mapforce\contacts\java" classname="com.mapforce.MappingConsole" fork="true" failonerror="true">
+			<arg line="${cmdline}"/>
+		</java>
+	</target>
+	<target name="clean">
+		<delete>
+			<fileset dir=".">
+				<include name="**/*.class"/>
+				<include name="*.jar"/>
+			</fileset>
+		</delete>
+	</target>
+	<target name="jar" depends="compile">
+		<jar destfile="Mapping.jar" manifest="C:\Users\taufik\source\mapforce-wrapper-azfunction\mapforce\contacts\java\META-INF\MANIFEST.MF" basedir="." includes="**/*.xml **/*.class **/*.png **/*.wsdl **/MANIFEST.MF" excludes="**/*.java"/>
+	</target>
+</project>
