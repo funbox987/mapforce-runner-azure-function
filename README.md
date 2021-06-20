@@ -19,7 +19,12 @@ This package is :
 
 ## Design
 
-This is the high level design of the solution
+1. Azure function:
+    - Doesn't need mapforce jars during compile time. 
+    - Mapforce JARS are kept in blob storage.
+    - They will be dynamically loaded during runtime per request.
+    
+2. Blob storage is also in Azure 
 
 ![Design](images/3-hld.png)
 
