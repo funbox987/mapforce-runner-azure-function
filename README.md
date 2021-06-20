@@ -8,18 +8,18 @@ To have 1 common azure function that can run any mapforce jar as follow:
 ![Objective](images/2-box-diagram.png)
 
 ## Notes
-This project is :
+This package is :
 - a proof of concept version
-- gives an azure function, a common function that dynamically load and run mapforce jars
-- works for simple mapping pattern where there are exactly : 1 input component & 1 output component as follow:
+- gives an azure function, a common function that will dynamically load and run mapforce jars **during runtime**
+- works for simple mapping pattern where there are exactly : 1 input component & 1 output component, refer to diagram below
 - data will be treated as "String" in and "String" out.
-- input/output format can be anything - json, xml, csv, dsv, fixedlen, complex, edi, etc - as long as mapforce mapping design follow exactly the pattern : 1 input & 1 output
+- input/output format can be anything - json, xml, csv, dsv, fixedlength, complex, edi, etc - as long as the mapforce mapping design follow exactly the pattern : 1 input & 1 output
 
 ![Simple 1 input 1 output mapping](images/0-mapforce-simple-mapping.png)
 
 ## Design
 
-The following diagram shows high level design of the solution:
+This is the high level design of the solution
 
 ![Design](images/3-hld.png)
 
