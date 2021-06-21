@@ -23,6 +23,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Function {
@@ -74,29 +75,30 @@ public class Function {
         final String body = request.getBody().orElse("");
         String result = "";
 
-        mapforceJarLocalTempFilePath += mapforceJarPath;
-        if (mapforceJarPath.contains("/")) {
-          mapforceJarLocalTempFilePath = mapforceJarLocalTempFilePath.replace('/','_');
-        }
-
-
         logger.info("Incoming request");
-        logger.info("mapforceJarLocalTempFilePath = " + mapforceJarLocalTempFilePath);
 
         if (mapforceClassname == null || mapforceClassname == "") {
             return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Please pass in mapforce class name").build();
         } else if (mapforceJarPath == null || mapforceJarPath == "") {
             return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Please pass in mapforce jar path.").build();        }
-        else if (body == "") {
+        else if (body == null || body == "") {
             return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Please pass in data.").build();
         } else {
+
+            mapforceJarLocalTempFilePath += mapforceJarPath;
+            if (mapforceJarPath.contains("/")) {
+                mapforceJarLocalTempFilePath = mapforceJarLocalTempFilePath.replace('/','_');
+            }
+            logger.info("mapforceJarLocalTempFilePath = " + mapforceJarLocalTempFilePath);
+
 
             try {
                 downloadJarFromBlob(mapforceJarPath);
             } catch (Exception e) {
 
-                result = "Unable to load jar " + mapforceJarPath + " from blob container " + blobContainerName;
-                logger.severe(result);
+                result = "Unable to download jar " + mapforceJarPath + " from blob container " + blobContainerName + " with error " + e.getMessage();
+
+                logger.log(Level.SEVERE, result, e);
                 return request.createResponseBuilder(HttpStatus.INTERNAL_SERVER_ERROR).body(result).build();
             }
 
@@ -107,7 +109,7 @@ public class Function {
             } catch (Exception e) {
                 result = "Unable to load classes from " + mapforceJarLocalTempFilePath + " with error " + e.getMessage();
 
-                logger.severe(result);
+                logger.log(Level.SEVERE, result, e);
                 return request.createResponseBuilder(HttpStatus.INTERNAL_SERVER_ERROR).body(result).build();
             }
 
@@ -129,8 +131,10 @@ public class Function {
                 return request.createResponseBuilder(HttpStatus.OK).body(result).build();
 
             } catch (Exception e) {
-                logger.severe("Unable to transform data");
+
                 result = "Transform failed due to " + e.getMessage()+ ". Please check logs for more details.";
+                logger.log(Level.SEVERE, result, e);
+
                 return request.createResponseBuilder(HttpStatus.INTERNAL_SERVER_ERROR).body(result).build();
             }
 
@@ -158,8 +162,6 @@ public class Function {
 
         mapforceObject = classMapforceGenerated.newInstance();
         mapforceMethod = classMapforceGenerated.getMethod(METHOD_RUN, new Class[]{classComAltovaIoInput, classComAltovaIoOutput});
-
-
     }
 
     public void downloadJarFromBlob(String jarBlobPath) {

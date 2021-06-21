@@ -51,16 +51,20 @@ This package is :
    - Blob container name : mapforcejar-container
    - Blob path : contacts-csv-to-xml/contacts-csv-to-xml-1.0.jar
    
-6. Update local.settings.json, change this setting:
+6. Update local.settings.json, change this setting to approriate connection string:
    
-        "MapforceBlobConnectionString" : "update with storage account connection string"
+        "MapforceBlobConnectionString" : "changethis"
+
+7. Update pom.xml, change this setting as well:
+
+         <MapforceBlobConnectionString>changethis</MapforceBlobConnectionString>
    
-7. To test locally, run:
+8. To test locally, run:
    
         mvn clean package
         mvn azure-functions:run
    
-8. Once function is running locally, use the sample input data (input1.csv) and rest client to send http post data to following endpoint:
+9. Once function is running locally, use the sample input data (input1.csv) and rest client to send http post data to following endpoint:
    
         curl --location --request POST 'http://localhost:7071/api/mapforcerunner?mapforcejarpath=contacts-csv-to-xml/contacts-csv-to-xml-1.0.jar&mapforceclassname=com.mapforce.MappingMapTocontacts' \
         --header 'Content-Type: text/plain' \
@@ -71,21 +75,21 @@ This package is :
         4,Kat,kat@qs.co.jp'
    
 
-9. To deploy to Azure, update pom.xml change "azure-functions-maven-plugin" configuration accordingly:
+10. To deploy to Azure, update pom.xml change "azure-functions-maven-plugin" configuration accordingly:
 
          <appName>change-this-to-what-was-created-in-step-1</appName>
          <resourceGroup>change-this-to-what-was-created-in-step-1</resourceGroup>
          
-10. Then run:
+11. Then run:
     
          mvn azure-functions:deploy
     
-11. Go to Azure Portal > function app > configurations, add these settings:
+12. Go to Azure Portal > function app > configurations, add these settings:
     
         MapforceBlobConnectionString : connection_string_to_blob
         MapforceBlobContainerName : mapforcejar-container
 
-12. Test again using the online endpoint provided by azure function app
+13. Test again using the online endpoint provided by azure function app
 
         https://{functionAppName}.azurewebsites.net/api/mapforcerunner
 
